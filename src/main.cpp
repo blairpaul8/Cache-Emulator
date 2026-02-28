@@ -1,3 +1,4 @@
+#include "cache.hpp"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -42,27 +43,26 @@ int main(int argc, char *argv[]) {
   for (i = 1; i < argc; i += 2) {
     string temp = argv[i];
     switch (map_flags(temp)) {
-      case Flags::sets:
-        num_sets = atoi(argv[i + 1]);
-        break;
-      case Flags::blocks:
-        num_blocks = atoi(argv[i + 1]);
-        break;
-      case Flags::size:
-        block_size = atoi(argv[i + 1]);
-        break;
-      case Flags::trace:
-        filename = argv[i + 1];
-        break;
-      case Flags::invalid:
-        printf("%s is an invalid flag.\n", argv[i]);
-        return 1;
-      default:
-        printf("Unknown Flag.\n");
-        return 1;
+    case Flags::sets:
+      num_sets = atoi(argv[i + 1]);
+      break;
+    case Flags::blocks:
+      num_blocks = atoi(argv[i + 1]);
+      break;
+    case Flags::size:
+      block_size = atoi(argv[i + 1]);
+      break;
+    case Flags::trace:
+      filename = argv[i + 1];
+      break;
+    case Flags::invalid:
+      printf("%s is an invalid flag.\n", argv[i]);
+      return 1;
+    default:
+      printf("Unknown Flag.\n");
+      return 1;
     }
   }
-
 
   printf("num_sets: %d\n", num_sets);
   printf("num_blocks: %d\n", num_blocks);
