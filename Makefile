@@ -13,6 +13,9 @@ OBJS := $(SRCS:src/%.cpp=bin/%.o)
 
 $(TARGET): $(OBJS)
 	$(CXX) $(CFLAGS) $(OBJS) -o $(TARGET) 
+	@echo 
+	@echo           "******* Run Command ***********"
+	@echo "./cache_emulator --sets <num_sets> --blocks <num_blocks> --size <block_size> --trace <trace_filename>"
 
 bin:
 	mkdir -p bin
