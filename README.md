@@ -9,7 +9,7 @@
   - --blocks -> number of blocks per set
   - --size -> block size in bytes
 
-Total cache = set *blocks* block_size
+Total cache = set x blocks x block_size
 
 - A block is a chunck of memory of --size bytes
   - Identified by a tag
