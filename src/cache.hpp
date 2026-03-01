@@ -1,21 +1,51 @@
 #ifndef CACHE_HPP
 #define CACHE_HPP
 
+#include <chrono>
 #include <fstream>
 #include <string>
 using namespace std;
 
+// using a timestamp for the LRU right now we can loop through that set and see
+// which is the oldest. for that we will need a find_oldest helper function or
+// make it a method of the class. The other option is to use a doubly linked
+// list to enforce the LRU policy but this seems harder to keep up with.
+struct Block {
+  int tag;
+  bool valid;
+  chrono::time_point<chrono::steady_clock> timestamp;
+};
+
 class Cache {
 private:
-  int sets;
-  int blocks;
-  int size;
+  uint sets;
+  uint blocks;
+  uint size;
   string trace;
   ifstream fin;
 
+  // These are the number of bits for this break down of the memory address
+  // |  Tag |  Set |  Offset  |
+  int offset_bits;
+  int index_bits;
+  int tag;
+  int set_index;
+
+  int num_misses;
+  int num_hits;
+  double hit_miss_ratio;
+
 public:
+  // Constructor
   Cache(int sets, int blocks, int size, string trace);
+
+  // Deconstructor
   ~Cache();
+
+  void run();
+
+  // this is for testing delete later.
+  void print_values();
 };
 
 #endif // !CACHE_HPP

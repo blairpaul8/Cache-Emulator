@@ -69,5 +69,12 @@ int main(int argc, char *argv[]) {
   printf("block_size: %d\n", block_size);
   cout << "filename: " << filename << endl;
 
+  printf("\n");
+
+  Cache *cache = new Cache(num_sets, num_blocks, block_size, filename);
+
+  cache->print_values();
+  cache->run();
+
   return 0;
 }

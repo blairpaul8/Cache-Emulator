@@ -2,7 +2,7 @@
 CXX = g++
 
 # Compiler flags
-CFLAGS = -std=c++17 -Wall -g 
+CFLAGS = -std=c++20 -Wall -g 
 
 TARGET = cache_emulator
 
