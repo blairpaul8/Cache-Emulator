@@ -4,6 +4,7 @@
 #include <chrono>
 #include <fstream>
 #include <string>
+#include <vector>
 using namespace std;
 
 // using a timestamp for the LRU right now we can loop through that set and see
@@ -28,12 +29,13 @@ private:
   // |  Tag |  Set |  Offset  |
   int offset_bits;
   int index_bits;
-  int tag;
-  int set_index;
 
   int num_misses;
   int num_hits;
   double hit_miss_ratio;
+
+  // Cache data structure
+  vector<vector<Block>> cache;
 
 public:
   // Constructor
@@ -46,6 +48,11 @@ public:
 
   // this is for testing delete later.
   void print_values();
+
+  // could come up with a better name for this
+  // This function returns true if it is a cache hit
+  // false if cache miss
+  bool search_cache(int set_index, int tag);
 };
 
 #endif // !CACHE_HPP
