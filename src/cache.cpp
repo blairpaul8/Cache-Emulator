@@ -10,6 +10,7 @@ Cache::Cache(int sets, int blocks, int size, string trace) {
   this->trace = trace;
 
   // initailize values to zero
+  this->num_accesses = 0;
   this->num_hits = 0;
   this->num_misses = 0;
   this->hit_miss_ratio = 0.0;
@@ -42,15 +43,18 @@ void Cache::run() {
     int tag = address >> (offset_bits + index_bits);
 
     // delete debug statements later.
-    printf("\n");
-    printf("set_index: %d\n", set_index);
-    printf("tag: %d\n", tag);
+    // printf("\n");
+    // printf("set_index: %d\n", set_index);
+    // printf("tag: %d\n", tag);
 
+    this->num_accesses += 1;
     // Them memory address was found in the cache
     if (search_cache(set_index, tag)) {
       this->num_hits += 1;
     } else {
       // memory address not in the cache need to enforce LRU
+      Block temp_block = {tag, true, chrono::steady_clock::now()};
+      replace_oldest(set_index, temp_block);
       this->num_misses += 1;
     }
 
@@ -58,7 +62,11 @@ void Cache::run() {
     // LRU policy by evicting the least recently used and replacing it with the
     // new tag for the memory address we are currently proccessing.
   }
+  printf("accesses: %d\n", num_accesses);
+  printf("num_hits: %d\n", num_hits);
   printf("num_misses: %d\n", num_misses);
+  double miss_rate = (num_misses / (double)num_accesses) * 100;
+  printf("Miss Rate: %.2lf%%", miss_rate);
 }
 
 bool Cache::search_cache(int set_index, int tag) {
@@ -73,7 +81,39 @@ bool Cache::search_cache(int set_index, int tag) {
   return false;
 }
 
+void Cache::replace_oldest(int set_index, Block b) {
+  for (uint i = 0; i < blocks; i++) {
+    // if tag = 0 this block hasn't been filled yet so put the new block b in
+    // there
+    if (cache[set_index][i].tag == 0) {
+      cache[set_index][i] = b;
+      return;
+    }
+  }
+
+  // find oldest block index
+  uint oldest_idx = 0;
+  for (uint i = 1; i < blocks; i++) {
+    if (cache[set_index][oldest_idx].timestamp <
+        cache[set_index][i].timestamp) {
+      oldest_idx = i;
+    }
+  }
+
+  cache[set_index][oldest_idx] = b;
+}
+
 void Cache::print_values() {
   printf("offset_bits: %u\n", this->offset_bits);
   printf("index_bits: %u\n", this->index_bits);
+}
+
+void Cache::print_cache() {
+  for (uint i = 0; i < sets; i++) {
+    printf("Set: %d\n", i);
+    for (uint j = 0; j < blocks; j++) {
+      printf("     tag: %d\n", cache[i][j].tag);
+    }
+    printf("\n\n");
+  }
 }

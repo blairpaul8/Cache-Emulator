@@ -30,6 +30,7 @@ private:
   int offset_bits;
   int index_bits;
 
+  int num_accesses;
   int num_misses;
   int num_hits;
   double hit_miss_ratio;
@@ -48,11 +49,14 @@ public:
 
   // this is for testing delete later.
   void print_values();
+  void print_cache();
 
   // could come up with a better name for this
   // This function returns true if it is a cache hit
   // false if cache miss
   bool search_cache(int set_index, int tag);
+
+  void replace_oldest(int set_index, Block b);
 };
 
 #endif // !CACHE_HPP

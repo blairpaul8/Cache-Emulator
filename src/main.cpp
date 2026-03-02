@@ -1,5 +1,4 @@
 #include "cache.hpp"
-#include <fstream>
 #include <iostream>
 using namespace std;
 
@@ -73,8 +72,9 @@ int main(int argc, char *argv[]) {
 
   Cache *cache = new Cache(num_sets, num_blocks, block_size, filename);
 
-  cache->print_values();
+  // cache->print_values();
   cache->run();
+  // cache->print_cache();
 
   return 0;
 }
