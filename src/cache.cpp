@@ -94,8 +94,8 @@ void Cache::replace_oldest(int set_index, Block b) {
   // find oldest block index
   uint oldest_idx = 0;
   for (uint i = 1; i < blocks; i++) {
-    if (cache[set_index][oldest_idx].timestamp <
-        cache[set_index][i].timestamp) {
+    if (cache[set_index][i].timestamp <
+        cache[set_index][oldest_idx].timestamp) {
       oldest_idx = i;
     }
   }

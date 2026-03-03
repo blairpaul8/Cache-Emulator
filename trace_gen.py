@@ -1,7 +1,9 @@
 import random
 
 # Configuration
-MEMORY_SIZE = 1024 * 1024  # 1 MB simulated memory
+MEMORY_SIZE = 64 * 1024  # 64 kB simulated memory
+# MEMORY_SIZE = 16 * 1024  # 16 kB simulated memory
+# MEMORY_SIZE = 1024 * 1024  # 1 MB simulated memory
 NUM_ACCESSES = 10000  # Total accesses per trace
 
 
