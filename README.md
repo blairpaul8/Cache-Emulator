@@ -33,3 +33,13 @@ Using the Baseline LRU and the random.trace file:
 NOTE: to calculate sets you can use the following formula
 
   sets = capacity / (blocks x block_size)
+
+# Run the Emulator
+
+NOTE: This is 32kB cache block size 64B 8-way associativity.
+
+```
+./cache_emulator --blocks 8 --sets 64  --size 64 --trace ./trace_files/random_64kB.trace 
+```
+
+To change associativity you need to recalculate number of sets.
