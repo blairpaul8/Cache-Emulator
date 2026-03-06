@@ -7,6 +7,7 @@ enum class Flags {
   blocks,
   size,
   trace,
+  rrip,
   invalid,
 };
 
@@ -23,6 +24,9 @@ Flags map_flags(string &str) {
   if (str == "--trace") {
     return Flags::trace;
   }
+  if (str == "--policy") {
+    return Flags::rrip;
+  }
   return Flags::invalid;
 }
 
@@ -37,6 +41,7 @@ int main(int argc, char *argv[]) {
   int num_blocks = 0;
   int block_size = 0;
   string filename = "";
+  bool rrip = false;
 
   int i;
   for (i = 1; i < argc; i += 2) {
@@ -54,6 +59,9 @@ int main(int argc, char *argv[]) {
     case Flags::trace:
       filename = argv[i + 1];
       break;
+    case Flags::rrip:
+      rrip = true;
+      break;
     case Flags::invalid:
       printf("%s is an invalid flag.\n", argv[i]);
       return 1;
@@ -67,10 +75,11 @@ int main(int argc, char *argv[]) {
   printf("num_blocks: %d\n", num_blocks);
   printf("block_size: %d\n", block_size);
   cout << "filename: " << filename << endl;
+  printf("RRIP: %s\n", rrip ? "true" : "false");
 
   printf("\n");
 
-  Cache *cache = new Cache(num_sets, num_blocks, block_size, filename);
+  Cache *cache = new Cache(num_sets, num_blocks, block_size, filename, rrip);
 
   // cache->print_values();
   cache->run();

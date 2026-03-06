@@ -15,6 +15,9 @@ struct Block {
   int tag;
   bool valid;
   chrono::time_point<chrono::steady_clock> timestamp;
+
+  // hot cold value for RRIP Policy
+  int m;
 };
 
 class Cache {
@@ -23,6 +26,8 @@ private:
   uint blocks;
   uint size;
   string trace;
+  bool rrip;
+
   ifstream fin;
 
   // These are the number of bits for this break down of the memory address
@@ -40,7 +45,7 @@ private:
 
 public:
   // Constructor
-  Cache(int sets, int blocks, int size, string trace);
+  Cache(int sets, int blocks, int size, string trace, bool rrip);
 
   // Deconstructor
   ~Cache();
@@ -56,7 +61,11 @@ public:
   // false if cache miss
   bool search_cache(int set_index, int tag);
 
+  // use this for eviction for LRU
   void replace_oldest(int set_index, Block b);
+
+  // If --policy flag is rrip we will use this run method
+  void rrip_policy(int set_index, Block b);
 };
 
 #endif // !CACHE_HPP

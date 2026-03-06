@@ -3,11 +3,12 @@
 #include <cmath>
 using namespace std;
 
-Cache::Cache(int sets, int blocks, int size, string trace) {
+Cache::Cache(int sets, int blocks, int size, string trace, bool rrip) {
   this->sets = sets;
   this->blocks = blocks;
   this->size = size;
   this->trace = trace;
+  this->rrip = rrip;
 
   // initailize values to zero
   this->num_accesses = 0;
@@ -24,14 +25,14 @@ Cache::Cache(int sets, int blocks, int size, string trace) {
   this->cache.resize(sets);
   for (int i = 0; i < sets; i++) {
     // intialize each block
-    Block temp = {0, false, chrono::steady_clock::now()};
+    Block temp = {0, false, chrono::steady_clock::now(), -1};
     this->cache[i].resize(blocks, temp);
   }
 }
 
 Cache::~Cache() { this->fin.close(); }
 
-// main method of cahce emulator
+// Run the cache emulator with Least Recently Used eviction policy
 void Cache::run() {
   string temp;
   while (getline(this->fin, temp)) {
@@ -54,25 +55,30 @@ void Cache::run() {
     } else {
       // memory address not in the cache need to enforce LRU
       Block temp_block = {tag, true, chrono::steady_clock::now()};
-      replace_oldest(set_index, temp_block);
+
+      if (this->rrip) {
+        rrip_policy(set_index, temp_block);
+      } else {
+        replace_oldest(set_index, temp_block);
+      }
       this->num_misses += 1;
     }
-
-    // NOTE some forward thinking if it is a miss then we need to enforce the
-    // LRU policy by evicting the least recently used and replacing it with the
-    // new tag for the memory address we are currently proccessing.
   }
+
   printf("accesses: %d\n", num_accesses);
   printf("num_hits: %d\n", num_hits);
   printf("num_misses: %d\n", num_misses);
   double miss_rate = (num_misses / (double)num_accesses) * 100;
-  printf("Miss Rate: %.2lf%%", miss_rate);
+  printf("Miss Rate: %.2lf%%\n", miss_rate);
 }
 
 bool Cache::search_cache(int set_index, int tag) {
   for (uint i = 0; i < blocks; i++) {
     Block temp = cache[set_index][i];
     if (temp.tag == tag && temp.valid) {
+      // If cache hit set m value for RRIP to 0
+      // We can do this when using LRU and just ignore m value.
+      temp.m = 0;
       return true;
     }
   }
@@ -101,6 +107,36 @@ void Cache::replace_oldest(int set_index, Block b) {
   }
 
   cache[set_index][oldest_idx] = b;
+}
+
+void Cache::rrip_policy(int set_index, Block b) {
+  // if m = -1 this block hasn't been used yet insert new block into the set.
+  for (uint i = 0; i < blocks; i++) {
+    if (cache[set_index][i].m == -1) {
+      // New insertions set m value to 2
+      b.m = 2;
+      cache[set_index][i] = b;
+    }
+  }
+
+  // using this as a flag to see if we found a block with m = 3 to evict
+  bool found = false;
+  while (!found) {
+    for (uint i = 0; i < blocks; i++) {
+      if (cache[set_index][i].m == 3) {
+        b.m = 2;
+        cache[set_index][i] = b;
+        found = true;
+        return;
+      }
+    }
+    // If we reach here we didn't find a block with
+    // an m = 3. So now loop through and increment each one
+    // until we find one that is equal to 3.
+    for (uint j = 0; j < blocks; j++) {
+      cache[set_index][j].m += 1;
+    }
+  }
 }
 
 void Cache::print_values() {
