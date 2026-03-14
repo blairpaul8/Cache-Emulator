@@ -2,8 +2,6 @@
 
 ## Cache Emulator for ECE-356 Computer Systems Architecture
 
-# Starting Notes on cache Emulator
-
 - The cache is defined by three numbers
   - --sets -> number of sets
   - --blocks -> number of blocks per set
@@ -19,10 +17,28 @@ Total cache = set x blocks x block_size
 - Addresses are interpreted as
   | Tag | Set Index | Block Offset |
 
-Note: if block size on it  is direct mapped
-      if blocks > 1 it is set associative
+## Cache Emulator Implementation
 
-# Testing the emulator
+The cache is represented by a Cache class. The main data structure to represent the cache is a 2d array that is an array of sets that holds an array of blocks at each index.
+
+```
+vector<vector<Block>> cache;
+```
+
+Additionally the blocks are represented by a struct that holds the following mata data about the block
+
+```
+struct Block {
+  int tag;
+  bool valid;
+  chrono::time_point<chrono::steady_clock> timestamp;
+  int m;
+}
+```
+
+NOTE: the timestamp is used for the LRU policy and m is used for the RRIP policy.
+
+## Testing the emulator
 
 The assignment states the following for testing part 1
 Using the Baseline LRU and the random.trace file:
