@@ -59,6 +59,7 @@ void Cache::run() {
       if (this->rrip) {
         rrip_policy(set_index, temp_block);
       } else {
+        printf("Not LRU\n");
         replace_oldest(set_index, temp_block);
       }
       this->num_misses += 1;
@@ -74,11 +75,11 @@ void Cache::run() {
 
 bool Cache::search_cache(int set_index, int tag) {
   for (uint i = 0; i < blocks; i++) {
-    Block temp = cache[set_index][i];
-    if (temp.tag == tag && temp.valid) {
+    if (cache[set_index][i].tag == tag && cache[set_index][i].valid) {
+
       // If cache hit set m value for RRIP to 0
       // We can do this when using LRU and just ignore m value.
-      temp.m = 0;
+      cache[set_index][i].m = 0;
       return true;
     }
   }
@@ -116,6 +117,7 @@ void Cache::rrip_policy(int set_index, Block b) {
       // New insertions set m value to 2
       b.m = 2;
       cache[set_index][i] = b;
+      return;
     }
   }
 
@@ -123,6 +125,9 @@ void Cache::rrip_policy(int set_index, Block b) {
   bool found = false;
   while (!found) {
     for (uint i = 0; i < blocks; i++) {
+
+      // Evicting the block at i because m == 3
+      // We insert the new block b with an m value of 2 as per the write-up
       if (cache[set_index][i].m == 3) {
         b.m = 2;
         cache[set_index][i] = b;
