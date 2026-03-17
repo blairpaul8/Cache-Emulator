@@ -59,3 +59,7 @@ NOTE: This is 32kB cache block size 64B 8-way associativity.
 ```
 
 To change associativity you need to recalculate number of sets.
+
+## Requirements
+
+You will need to run this program in linux or else there will be compile errors.

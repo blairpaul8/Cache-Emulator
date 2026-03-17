@@ -59,7 +59,6 @@ void Cache::run() {
       if (this->rrip) {
         rrip_policy(set_index, temp_block);
       } else {
-        printf("Not LRU\n");
         replace_oldest(set_index, temp_block);
       }
       this->num_misses += 1;
