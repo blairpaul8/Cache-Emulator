@@ -74,12 +74,13 @@ void Cache::run() {
 }
 
 bool Cache::search_cache(int set_index, int tag) {
-  for (uint i = 0; i < blocks; i++) {
+  for (uint64_t i = 0; i < blocks; i++) {
     if (cache[set_index][i].tag == tag && cache[set_index][i].valid) {
 
       // If cache hit set m value for RRIP to 0
       // We can do this when using LRU and just ignore m value.
       cache[set_index][i].m = 0;
+      cache[set_index][i].timestamp = chrono::steady_clock::now();
       return true;
     }
   }
@@ -89,7 +90,7 @@ bool Cache::search_cache(int set_index, int tag) {
 }
 
 void Cache::replace_oldest(int set_index, Block b) {
-  for (uint i = 0; i < blocks; i++) {
+  for (uint64_t i = 0; i < blocks; i++) {
     // if tag = 0 this block hasn't been filled yet so put the new block b in
     // there
     if (cache[set_index][i].tag == 0) {
@@ -99,8 +100,8 @@ void Cache::replace_oldest(int set_index, Block b) {
   }
 
   // find oldest block index
-  uint oldest_idx = 0;
-  for (uint i = 1; i < blocks; i++) {
+  uint64_t oldest_idx = 0;
+  for (uint64_t i = 1; i < blocks; i++) {
     if (cache[set_index][i].timestamp <
         cache[set_index][oldest_idx].timestamp) {
       oldest_idx = i;
@@ -112,7 +113,7 @@ void Cache::replace_oldest(int set_index, Block b) {
 
 void Cache::rrip_policy(int set_index, Block b) {
   // if m = -1 this block hasn't been used yet insert new block into the set.
-  for (uint i = 0; i < blocks; i++) {
+  for (uint64_t i = 0; i < blocks; i++) {
     if (cache[set_index][i].m == -1) {
       // New insertions set m value to 2
       b.m = 2;
@@ -124,7 +125,7 @@ void Cache::rrip_policy(int set_index, Block b) {
   // using this as a flag to see if we found a block with m = 3 to evict
   bool found = false;
   while (!found) {
-    for (uint i = 0; i < blocks; i++) {
+    for (uint64_t i = 0; i < blocks; i++) {
 
       // Evicting the block at i because m == 3
       // We insert the new block b with an m value of 2 as per the write-up
@@ -138,7 +139,7 @@ void Cache::rrip_policy(int set_index, Block b) {
     // If we reach here we didn't find a block with
     // an m = 3. So now loop through and increment each one
     // until we find one that is equal to 3.
-    for (uint j = 0; j < blocks; j++) {
+    for (uint64_t j = 0; j < blocks; j++) {
       cache[set_index][j].m += 1;
     }
   }
@@ -150,9 +151,9 @@ void Cache::print_values() {
 }
 
 void Cache::print_cache() {
-  for (uint i = 0; i < sets; i++) {
-    printf("Set: %d\n", i);
-    for (uint j = 0; j < blocks; j++) {
+  for (uint64_t i = 0; i < sets; i++) {
+    printf("Set: %d\n", (int)i);
+    for (uint64_t j = 0; j < blocks; j++) {
       printf("     tag: %d\n", cache[i][j].tag);
     }
     printf("\n\n");

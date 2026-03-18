@@ -22,9 +22,9 @@ struct Block {
 
 class Cache {
 private:
-  uint sets;
-  uint blocks;
-  uint size;
+  uint64_t sets;
+  uint64_t blocks;
+  uint64_t size;
   string trace;
   bool rrip;
 
