@@ -27,6 +27,7 @@ private:
   uint64_t size;
   string trace;
   bool rrip;
+  bool analyze;
 
   ifstream fin;
 
@@ -45,7 +46,7 @@ private:
 
 public:
   // Constructor
-  Cache(int sets, int blocks, int size, string trace, bool rrip);
+  Cache(int sets, int blocks, int size, string trace, bool rrip, bool analyze);
 
   // Deconstructor
   ~Cache();
@@ -66,6 +67,12 @@ public:
 
   // If --policy flag is rrip we will use this run method
   void rrip_policy(int set_index, Block b);
+
+    // Print method for python analyze script
+  void print_analyze(int accesses, int num_misses);
+
+  // Print method for testing
+  void print_normal(int accesses, int num_hits, int num_misses);
 };
 
 #endif // !CACHE_HPP

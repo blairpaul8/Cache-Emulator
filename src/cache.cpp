@@ -3,12 +3,13 @@
 #include <cmath>
 using namespace std;
 
-Cache::Cache(int sets, int blocks, int size, string trace, bool rrip) {
+Cache::Cache(int sets, int blocks, int size, string trace, bool rrip, bool analyze) {
   this->sets = sets;
   this->blocks = blocks;
   this->size = size;
   this->trace = trace;
   this->rrip = rrip;
+  this->analyze = analyze;
 
   // initailize values to zero
   this->num_accesses = 0;
@@ -59,18 +60,18 @@ void Cache::run() {
       if (this->rrip) {
         rrip_policy(set_index, temp_block);
       } else {
-        printf("Not LRU\n");
         replace_oldest(set_index, temp_block);
       }
       this->num_misses += 1;
     }
   }
 
-  printf("accesses: %d\n", num_accesses);
-  printf("num_hits: %d\n", num_hits);
-  printf("num_misses: %d\n", num_misses);
-  double miss_rate = (num_misses / (double)num_accesses) * 100;
-  printf("Miss Rate: %.2lf%%\n", miss_rate);
+  if(analyze) {
+    print_analyze(num_accesses, num_misses);
+  } else {
+    print_normal(num_accesses, num_hits, num_misses);
+  }
+
 }
 
 bool Cache::search_cache(int set_index, int tag) {
@@ -158,4 +159,17 @@ void Cache::print_cache() {
     }
     printf("\n\n");
   }
+}
+
+void Cache::print_analyze(int num_accesses, int num_misses) {
+  double miss_rate = (num_misses / (double)num_accesses) * 100;
+  printf("%.2lf\n", miss_rate);
+}
+
+void Cache::print_normal(int num_accesses, int num_hits, int num_misses) {
+  printf("accesses: %d\n", num_accesses);
+  printf("num_hits: %d\n", num_hits);
+  printf("num_misses: %d\n", num_misses);
+  double miss_rate = (num_misses / (double)num_accesses) * 100;
+  printf("Miss Rate: %.2lf%%\n", miss_rate);
 }

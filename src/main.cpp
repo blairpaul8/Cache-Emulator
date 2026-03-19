@@ -1,5 +1,6 @@
 #include "cache.hpp"
 #include <iostream>
+
 using namespace std;
 
 enum class Flags {
@@ -9,6 +10,7 @@ enum class Flags {
   trace,
   rrip,
   invalid,
+  analyze,
 };
 
 Flags map_flags(string &str) {
@@ -27,6 +29,9 @@ Flags map_flags(string &str) {
   if (str == "--policy") {
     return Flags::rrip;
   }
+  if (str == "--analyze") {
+    return Flags::analyze;
+  }
   return Flags::invalid;
 }
 
@@ -42,9 +47,9 @@ int main(int argc, char *argv[]) {
   int block_size = 0;
   string filename = "";
   bool rrip = false;
+  bool analyze = false;
 
-  int i;
-  for (i = 1; i < argc; i += 2) {
+  for (int i = 1; i < argc; i += 2) {
     string temp = argv[i];
     switch (map_flags(temp)) {
     case Flags::sets:
@@ -62,6 +67,9 @@ int main(int argc, char *argv[]) {
     case Flags::rrip:
       rrip = true;
       break;
+    case Flags::analyze:
+      analyze = true;
+      break;
     case Flags::invalid:
       printf("%s is an invalid flag.\n", argv[i]);
       return 1;
@@ -71,17 +79,18 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  printf("num_sets: %d\n", num_sets);
-  printf("num_blocks: %d\n", num_blocks);
-  printf("block_size: %d\n", block_size);
-  cout << "filename: " << filename << endl;
-  printf("RRIP: %s\n", rrip ? "true" : "false");
+  if (!analyze) {
+    printf("num_sets: %d\n", num_sets);
+    printf("num_blocks: %d\n", num_blocks);
+    printf("block_size: %d\n", block_size);
+    cout << "filename: " << filename << endl;
+    printf("RRIP: %s\n", rrip ? "true" : "false");
+    printf("\n");
+  }
 
-  printf("\n");
-
-  Cache *cache = new Cache(num_sets, num_blocks, block_size, filename, rrip);
-
+  Cache *cache = new Cache(num_sets, num_blocks, block_size, filename, rrip, analyze);
   // cache->print_values();
+
   cache->run();
   // cache->print_cache();
 
