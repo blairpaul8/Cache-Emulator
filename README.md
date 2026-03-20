@@ -63,3 +63,9 @@ To change associativity you need to recalculate number of sets.
 ## Requirements
 
 You will need to run this program in linux or else there will be compile errors.
+
+## Hand Trace File Command
+
+```
+.\cache_emulator --blocks 2 --sets 2  --size 8 --trace ./trace_files/verification.trace
+```
