@@ -72,21 +72,26 @@ for file in files:
 
 fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 
-# ---- TOP ROW: LRU ----
+x_positions = list(range(len(blocks)))
+x_labels = [str(b) for b in blocks]
+
 for i, file in enumerate(files):
     miss_rates = lru_results[file]
 
-    axes[0][i].plot(blocks, miss_rates, marker='o')
+    axes[0][i].plot(x_positions, miss_rates, marker='o')
+    axes[0][i].set_xticks(x_positions)
+    axes[0][i].set_xticklabels(x_labels)
     axes[0][i].set_xlabel("Blocks")
     axes[0][i].set_ylabel("Miss Rate")
     axes[0][i].set_title(f"{file} (LRU)")
     axes[0][i].grid()
 
-# ---- BOTTOM ROW: RRIP ----
 for i, file in enumerate(files):
     miss_rates = rrip_results[file]
 
-    axes[1][i].plot(blocks, miss_rates, marker='o')
+    axes[1][i].plot(x_positions, miss_rates, marker='o')
+    axes[1][i].set_xticks(x_positions)
+    axes[1][i].set_xticklabels(x_labels)
     axes[1][i].set_xlabel("Blocks")
     axes[1][i].set_ylabel("Miss Rate")
     axes[1][i].set_title(f"{file} (RRIP)")
