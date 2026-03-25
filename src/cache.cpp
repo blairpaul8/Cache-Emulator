@@ -3,7 +3,8 @@
 #include <cmath>
 using namespace std;
 
-Cache::Cache(int sets, int blocks, int size, string trace, bool rrip, bool analyze) {
+Cache::Cache(int sets, int blocks, int size, string trace, bool rrip,
+             bool analyze) {
   this->sets = sets;
   this->blocks = blocks;
   this->size = size;
@@ -44,11 +45,6 @@ void Cache::run() {
     int set_index = (address >> offset_bits) & (sets - 1);
     int tag = address >> (offset_bits + index_bits);
 
-    // delete debug statements later.
-    // printf("\n");
-    // printf("set_index: %d\n", set_index);
-    // printf("tag: %d\n", tag);
-
     this->num_accesses += 1;
     // Them memory address was found in the cache
     if (search_cache(set_index, tag)) {
@@ -66,12 +62,11 @@ void Cache::run() {
     }
   }
 
-  if(analyze) {
+  if (analyze) {
     print_analyze(num_accesses, num_misses);
   } else {
     print_normal(num_accesses, num_hits, num_misses);
   }
-
 }
 
 bool Cache::search_cache(int set_index, int tag) {
@@ -94,7 +89,7 @@ void Cache::replace_oldest(int set_index, Block b) {
   for (uint64_t i = 0; i < blocks; i++) {
     // if tag = 0 this block hasn't been filled yet so put the new block b in
     // there
-    if (cache[set_index][i].tag == 0) {
+    if (cache[set_index][i].valid == false) {
       cache[set_index][i] = b;
       return;
     }
@@ -115,8 +110,9 @@ void Cache::replace_oldest(int set_index, Block b) {
 void Cache::rrip_policy(int set_index, Block b) {
   // if m = -1 this block hasn't been used yet insert new block into the set.
   for (uint64_t i = 0; i < blocks; i++) {
-    if (cache[set_index][i].m == -1) {
+    if (cache[set_index][i].valid == false) {
       // New insertions set m value to 2
+      b.valid = true;
       b.m = 2;
       cache[set_index][i] = b;
       return;
@@ -141,7 +137,9 @@ void Cache::rrip_policy(int set_index, Block b) {
     // an m = 3. So now loop through and increment each one
     // until we find one that is equal to 3.
     for (uint64_t j = 0; j < blocks; j++) {
-      cache[set_index][j].m += 1;
+      if (cache[set_index][j].m < 3) {
+        cache[set_index][j].m += 1;
+      }
     }
   }
 }
