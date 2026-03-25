@@ -2,8 +2,9 @@ import random
 
 # Configuration
 # MEMORY_SIZE = 64 * 1024  # 64 kB simulated memory
+MEMORY_SIZE = 32 * 1024  # 32 kB simulated memory
 # MEMORY_SIZE = 16 * 1024  # 16 kB simulated memory
-MEMORY_SIZE = 1024 * 1024  # 1 MB simulated memory
+# MEMORY_SIZE = 1024 * 1024  # 1 MB simulated memory
 NUM_ACCESSES = 10000  # Total accesses per trace
 
 
@@ -18,7 +19,7 @@ def generate_linear():
 def generate_random():
     """Generates completely random accesses (poor locality)."""
     random.seed(42)  # Fixed seed for reproducibility
-    with open("random.trace", "w") as f:
+    with open("random_32kB.trace", "w") as f:
         for _ in range(NUM_ACCESSES):
             addr = 0x40000000 + random.randint(0, MEMORY_SIZE)
             addr = addr & ~3  # Align to 4 bytes
