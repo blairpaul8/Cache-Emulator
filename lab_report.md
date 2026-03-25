@@ -61,12 +61,14 @@ We can compare the results of our cache emulator to verify it is working properl
 .\cache_emulator --blocks 2 --sets 2  --size 8 --trace ./trace_files/verification.trace
 ```
 
-![verification_trace_output](analysis/verification_trace_screenshot.jpg)
+![verification_trace_output](./analysis/verification_trace_screenshot.jpg)
 We can see with the output above we get the expected miss rate of 60%
 
 <div style="margin-top: 50px;"></div>
 <center><h2>Results</h2></center>
 <h3>Experiment A: Associativity Sensitivity</h3>
+
+![lru_random_trace](./analysis/random_64kB_trace_graph.jpg)
 <h3>Experiment B: The Comparison</h3>
 <div style="margin-top: 50px;"></div>
 <center><h2>Conclusion</h2></center>
