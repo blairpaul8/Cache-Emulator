@@ -25,7 +25,7 @@ Cache Datastructure
 
 ```
 
-As shown above the we represented the blocks as a struct that contains the tag, valid bit, timestamp, and replacement value m. The timestamp is used for enforcing the least recently used (LRU) replacement policy. The value m is used as the hot cold value, this is used to enforced the RRIP replacement policy.
+As shown above the we represented the blocks as a struct that contains the tag, valid bit, timestamp, and replacement value m. The timestamp is used for enforcing the least recently used (LRU) replacement policy. The value m is used as the hot cold value, this is used to enforced the RRIP replacement policy. The cache itself is represented as a vector of vectors. With this we can index the outer vector to access a particular set then index the inner vector to access a particular block.
 
 <div style="margin-top: 50px;"></div>
 <center><h2>Verification</h2></center>
