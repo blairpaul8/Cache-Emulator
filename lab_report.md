@@ -72,3 +72,6 @@ We can see with the output above we get the expected miss rate of 60%
 <h3>Experiment B: The Comparison</h3>
 <div style="margin-top: 50px;"></div>
 <center><h2>Conclusion</h2></center>
+<div>
+  This lab demonstrates how cache performance is strongly influenced by temporal and spatial locality, as seen through comparisons between linear traces (which exhibit high locality and low miss rates) and random traces (which show low locality and high miss rates). Varying the range of memory addresses in random traces (such as 1MB, 64KB, and 32KB) highlights how the relationship between working set size and cache size affects miss rates and the effectiveness of different associativity levels. Increasing associativity generally reduces conflict misses for larger working sets, but can introduce tradeoffs when it reduces the number of sets, sometimes leading to diminished performance in borderline cases. Additionally, comparisons between LRU and RRIP replacement policies show that LRU performs well under strong locality, while RRIP can better manage certain access patterns by predicting reuse, though both behave similarly under highly random workloads. Overall, the results emphasize the importance of workload characteristics and architectural tradeoffs in cache design.
+</div>
