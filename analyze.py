@@ -5,7 +5,7 @@ blocks = [1, 2, 4, 8, 512]
 sets = [512, 256, 128, 64, 1]
 size = 64
 
-files = ["linear.trace", "random_32kB.trace"]
+files = ["linear.trace", "rrip_vs_lru.trace"]
 
 lru_results = {}  # store results per file
 rrip_results = {}  # store results per file
@@ -114,6 +114,6 @@ fig.subplots_adjust(hspace=0.6)
 
 # Save final combined image
 print("saving picture")
-plt.savefig("analysis/comparison_32kB_trace.png", dpi=300)
+plt.savefig("analysis/rrip_friendly.png", dpi=300)
 
 plt.close()
