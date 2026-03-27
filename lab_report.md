@@ -1,6 +1,6 @@
 <center><h1>Lab 2: Cache Emulator</h1></center>
 
-<center><h4>Connor Lidell, Eli Fisk, Paul Blair</h4></center>
+<center><h4>Conner Liddell, Eli Fisk, Paul Blair</h4></center>
 
 <div style="margin-top: 50px;"></div>
 <center><h2>Implementation Details</h2></center>
@@ -72,7 +72,8 @@ We can see with the output above we get the expected miss rate of 60%
 <h3>Experiment B: The Comparison</h3>
 
 <img src="./analysis/bar_graph.jpg" alt="bar_graph" width="500">
-
+<center><h3>Analysis</h3></center>
+Our extension (RRIP) performed slightly better on the random trace because it was able to evict the less used values rather than just taking the last used out. They performed the same on the linear trace because the least recently used always matched the RRPV value.
 <div style="margin-top: 50px;"></div>
 <center><h2>Conclusion</h2></center>
 <div>
