@@ -70,6 +70,9 @@ We can see with the output above we get the expected miss rate of 60%
 
 ![lru_random_trace](./analysis/random_64kB_trace_graph.jpg)
 <h3>Experiment B: The Comparison</h3>
+
+<img src="./analysis/bar_graph.jpg" alt="bar_graph" width="500">
+
 <div style="margin-top: 50px;"></div>
 <center><h2>Conclusion</h2></center>
 <div>
