@@ -2,7 +2,7 @@
 
 <center><h4>Conner Liddell, Eli Fisk, Paul Blair</h4></center>
 
-<div>GitHub Link: <https://github.com/blairpaul8/Cache-Emulator></div>
+<center><div>GitHub Link: https://github.com/blairpaul8/Cache-Emulator</div></center>
 
 <div style="margin-top: 50px;"></div>
 <center><h2>Implementation Details</h2></center>
