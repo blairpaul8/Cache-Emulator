@@ -7,6 +7,10 @@
 NOTE: This is 32kB cache block size 64B 8-way associativity.
 
 ```
+Build Command:
+make
+
+Run Command:
 ./cache_emulator --blocks 8 --sets 64  --size 64 --trace ./trace_files/random_64kB.trace 
 ```
 
