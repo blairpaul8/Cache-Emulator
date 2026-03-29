@@ -68,12 +68,19 @@ We can see with the output above we get the expected miss rate of 60%
 <center><h2>Results</h2></center>
 <h3>Experiment A: Associativity Sensitivity</h3>
 
-![lru_random_trace](./analysis/random_64kB_trace_graph.jpg)
+<center>
+<img src="./analysis/random_64kB_trace_graph.jpg" alt="random" width="300">
+</center>
 <h3>Experiment B: The Comparison</h3>
 
+<center>
+
 <img src="./analysis/bar_graph.jpg" alt="bar_graph" width="500">
+
 <center><h3>Analysis</h3></center>
 Our extension (RRIP) performed slightly better on the random trace because it was able to evict the less used values rather than just taking the last used out. They performed the same on the linear trace because the least recently used always matched the RRPV value.
+
+</center>
 <div style="margin-top: 50px;"></div>
 <center><h2>Conclusion</h2></center>
 <div>
