@@ -2,6 +2,18 @@
 
 ## Cache Emulator for ECE-356 Computer Systems Architecture
 
+# Run the Emulator
+
+NOTE: This is 32kB cache block size 64B 8-way associativity.
+
+```
+./cache_emulator --blocks 8 --sets 64  --size 64 --trace ./trace_files/random_64kB.trace 
+```
+
+To change associativity you need to recalculate number of sets.
+
+## Cache Details
+
 - The cache is defined by three numbers
   - --sets -> number of sets
   - --blocks -> number of blocks per set
@@ -38,20 +50,6 @@ struct Block {
 
 NOTE: the timestamp is used for the LRU policy and m is used for the RRIP policy.
 
-# Run the Emulator
-
-NOTE: This is 32kB cache block size 64B 8-way associativity.
-
-```
-./cache_emulator --blocks 8 --sets 64  --size 64 --trace ./trace_files/random_64kB.trace 
-```
-
-To change associativity you need to recalculate number of sets.
-
-## Requirements
-
-You will need to run this program in linux or else there will be compile errors.
-
 ## Hand Trace File Command
 
 ```
@@ -59,7 +57,7 @@ You will need to run this program in linux or else there will be compile errors.
 ```
 
 ## Trace Walkthrough
- 
+
 | Time | Address | Binary | Tag | Set | Set 0 | Set 1 | Eviction | Hit/Miss |
 |------|---------|--------|-----|-----|-------|-------|----------|----------|
 | T1 | `0x10` | `0001 0 000` | 1 | 0 | [**1**,-] | [-,-] |  | Miss |
